@@ -5,6 +5,10 @@
   "main": "src/index.js",
   "author": "Leonardo Vieira",
   "license": "ISC",
+  "scripts": {
+    "test": "jest --watch --silent --colors --noStackTrace --passWithNoTests",
+    "test:unit": "npm test -- -c jest-unit-config.js --runInBand"
+  },
   "devDependencies": {
     "jest": "^27.0.3"
   }
