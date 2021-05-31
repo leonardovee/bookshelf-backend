@@ -1,5 +1,5 @@
 const BookController = require('./book-controller.js')
-const { Unauthorized } = require('./helpers/http-helper.js')
+const { Unauthorized, ServerError } = require('./helpers/http-helper.js')
 
 class AddBookUseCaseStub {
   async add ({ name, author, description }) {}
@@ -56,6 +56,24 @@ describe('Book Controller', () => {
         author: 'any_author',
         description: 'any_description'
       })
+    })
+
+    test('Should return 500 if AddBookUseCase throws', async () => {
+      const addBookUseCaseStub = new AddBookUseCaseStub()
+      jest.spyOn(addBookUseCaseStub, 'add').mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      )
+      const error = ServerError()
+      const sut = new BookController(addBookUseCaseStub)
+
+      const response = await sut.post({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(response.body).toBe(error.body)
+      expect(response.statusCode).toBe(error.statusCode)
     })
   })
 })
