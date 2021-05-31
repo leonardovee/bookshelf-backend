@@ -1,8 +1,9 @@
 const { Unauthorized } = require('./helpers/http-helper')
 
 class BookController {
-  async post ({ name }) {
+  async post ({ name, author }) {
     if (!name) return Unauthorized('Missing param: name')
+    if (!author) return Unauthorized('Missing param: author')
   }
 }
 
