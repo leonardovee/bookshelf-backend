@@ -5,10 +5,19 @@ class AddBookUseCaseStub {
   async add ({ name, author, description }) {}
 }
 
+const makeSut = () => {
+  const addBookUseCaseStub = new AddBookUseCaseStub()
+  const sut = new BookController(addBookUseCaseStub)
+  return {
+    sut,
+    addBookUseCaseStub
+  }
+}
+
 describe('Book Controller', () => {
   describe('POST', () => {
     test('Should thrown if no name is provided', async () => {
-      const sut = new BookController()
+      const { sut } = makeSut()
       const error = Unauthorized('Missing param: name')
 
       const response = await sut.post({})
@@ -18,7 +27,7 @@ describe('Book Controller', () => {
     })
 
     test('Should thrown if no author is provided', async () => {
-      const sut = new BookController()
+      const { sut } = makeSut()
       const error = Unauthorized('Missing param: author')
 
       const response = await sut.post({ name: 'any_name' })
@@ -28,7 +37,7 @@ describe('Book Controller', () => {
     })
 
     test('Should thrown if no description is provided', async () => {
-      const sut = new BookController()
+      const { sut } = makeSut()
       const error = Unauthorized('Missing param: description')
 
       const response = await sut.post({
@@ -41,9 +50,8 @@ describe('Book Controller', () => {
     })
 
     test('Should call AddBookUseCase with correct values', async () => {
-      const addBookUseCaseStub = new AddBookUseCaseStub()
+      const { sut, addBookUseCaseStub } = makeSut()
       const addSpy = jest.spyOn(addBookUseCaseStub, 'add')
-      const sut = new BookController(addBookUseCaseStub)
 
       await sut.post({
         name: 'any_name',
@@ -59,12 +67,11 @@ describe('Book Controller', () => {
     })
 
     test('Should return 500 if AddBookUseCase throws', async () => {
-      const addBookUseCaseStub = new AddBookUseCaseStub()
+      const { sut, addBookUseCaseStub } = makeSut()
       jest.spyOn(addBookUseCaseStub, 'add').mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error()))
       )
       const error = ServerError()
-      const sut = new BookController(addBookUseCaseStub)
 
       const response = await sut.post({
         name: 'any_name',
@@ -77,8 +84,7 @@ describe('Book Controller', () => {
     })
 
     test('Should return 201 on success', async () => {
-      const addBookUseCaseStub = new AddBookUseCaseStub()
-      const sut = new BookController(addBookUseCaseStub)
+      const { sut } = makeSut()
       const ok = Ok()
 
       const response = await sut.post({
