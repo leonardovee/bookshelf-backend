@@ -1,0 +1,11 @@
+{
+  "name": "bookshelf-backend",
+  "version": "0.0.1",
+  "description": "create your own bookshelf",
+  "main": "src/index.js",
+  "author": "Leonardo Vieira",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.0.3"
+  }
+}
