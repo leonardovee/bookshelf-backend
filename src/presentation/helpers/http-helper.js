@@ -8,4 +8,9 @@ const ServerError = () => ({
   body: 'Internal server error'
 })
 
-module.exports = { Unauthorized, ServerError }
+const Ok = () => ({
+  statusCode: 201,
+  body: 'Resource created'
+})
+
+module.exports = { Unauthorized, ServerError, Ok }
