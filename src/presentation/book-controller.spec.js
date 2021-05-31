@@ -1,5 +1,5 @@
 const BookController = require('./book-controller.js')
-const { Unauthorized, ServerError } = require('./helpers/http-helper.js')
+const { Unauthorized, ServerError, Ok } = require('./helpers/http-helper.js')
 
 class AddBookUseCaseStub {
   async add ({ name, author, description }) {}
@@ -74,6 +74,21 @@ describe('Book Controller', () => {
 
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
+    })
+
+    test('Should return 201 on success', async () => {
+      const addBookUseCaseStub = new AddBookUseCaseStub()
+      const sut = new BookController(addBookUseCaseStub)
+      const ok = Ok()
+
+      const response = await sut.post({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(response.body).toBe(ok.body)
+      expect(response.statusCode).toBe(ok.statusCode)
     })
   })
 })
