@@ -3,4 +3,9 @@ const Unauthorized = (message) => ({
   body: message
 })
 
-module.exports = { Unauthorized }
+const ServerError = () => ({
+  statusCode: 500,
+  body: 'Internal server error'
+})
+
+module.exports = { Unauthorized, ServerError }
