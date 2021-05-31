@@ -22,5 +22,18 @@ describe('Book Controller', () => {
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
     })
+
+    test('Should thrown if no description is provided', async () => {
+      const sut = new BookController()
+      const error = Unauthorized('Missing param: description')
+
+      const response = await sut.post({
+        name: 'any_name',
+        author: 'any_author'
+      })
+
+      expect(response.body).toBe(error.body)
+      expect(response.statusCode).toBe(error.statusCode)
+    })
   })
 })
