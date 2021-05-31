@@ -5,6 +5,12 @@ class AddBookUseCaseStub {
   async add ({ name, author, description }) {}
 }
 
+const makeFakeRequest = () => ({
+  name: 'any_name',
+  author: 'any_author',
+  description: 'any_description'
+})
+
 const makeSut = () => {
   const addBookUseCaseStub = new AddBookUseCaseStub()
   const sut = new BookController(addBookUseCaseStub)
@@ -53,17 +59,9 @@ describe('Book Controller', () => {
       const { sut, addBookUseCaseStub } = makeSut()
       const addSpy = jest.spyOn(addBookUseCaseStub, 'add')
 
-      await sut.post({
-        name: 'any_name',
-        author: 'any_author',
-        description: 'any_description'
-      })
+      await sut.post(makeFakeRequest())
 
-      expect(addSpy).toHaveBeenCalledWith({
-        name: 'any_name',
-        author: 'any_author',
-        description: 'any_description'
-      })
+      expect(addSpy).toHaveBeenCalledWith(makeFakeRequest())
     })
 
     test('Should return 500 if AddBookUseCase throws', async () => {
@@ -73,11 +71,7 @@ describe('Book Controller', () => {
       )
       const error = ServerError()
 
-      const response = await sut.post({
-        name: 'any_name',
-        author: 'any_author',
-        description: 'any_description'
-      })
+      const response = await sut.post(makeFakeRequest())
 
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
@@ -87,11 +81,7 @@ describe('Book Controller', () => {
       const { sut } = makeSut()
       const ok = Ok()
 
-      const response = await sut.post({
-        name: 'any_name',
-        author: 'any_author',
-        description: 'any_description'
-      })
+      const response = await sut.post(makeFakeRequest())
 
       expect(response.body).toBe(ok.body)
       expect(response.statusCode).toBe(ok.statusCode)
