@@ -1,4 +1,4 @@
-const BookController = require('./book-controller.js')
+const CreateBookController = require('./create-book-controller.js')
 const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper.js')
 
 class AddBookUseCaseStub {
@@ -6,14 +6,16 @@ class AddBookUseCaseStub {
 }
 
 const makeFakeRequest = () => ({
-  name: 'any_name',
-  author: 'any_author',
-  description: 'any_description'
+  body: {
+    name: 'any_name',
+    author: 'any_author',
+    description: 'any_description'
+  }
 })
 
 const makeSut = () => {
   const addBookUseCaseStub = new AddBookUseCaseStub()
-  const sut = new BookController(addBookUseCaseStub)
+  const sut = new CreateBookController(addBookUseCaseStub)
   return {
     sut,
     addBookUseCaseStub
@@ -26,7 +28,7 @@ describe('Book Controller', () => {
       const { sut } = makeSut()
       const error = Unauthorized('Missing param: name')
 
-      const response = await sut.post({})
+      const response = await sut.route({ body: {} })
 
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
@@ -36,7 +38,7 @@ describe('Book Controller', () => {
       const { sut } = makeSut()
       const error = Unauthorized('Missing param: author')
 
-      const response = await sut.post({ name: 'any_name' })
+      const response = await sut.route({ body: { name: 'any_name' } })
 
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
@@ -46,9 +48,11 @@ describe('Book Controller', () => {
       const { sut } = makeSut()
       const error = Unauthorized('Missing param: description')
 
-      const response = await sut.post({
-        name: 'any_name',
-        author: 'any_author'
+      const response = await sut.route({
+        body: {
+          name: 'any_name',
+          author: 'any_author'
+        }
       })
 
       expect(response.body).toBe(error.body)
@@ -59,9 +63,9 @@ describe('Book Controller', () => {
       const { sut, addBookUseCaseStub } = makeSut()
       const addSpy = jest.spyOn(addBookUseCaseStub, 'add')
 
-      await sut.post(makeFakeRequest())
+      await sut.route(makeFakeRequest())
 
-      expect(addSpy).toHaveBeenCalledWith(makeFakeRequest())
+      expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
     })
 
     test('Should return 500 if AddBookUseCase throws', async () => {
@@ -71,7 +75,7 @@ describe('Book Controller', () => {
       )
       const error = ServerError()
 
-      const response = await sut.post(makeFakeRequest())
+      const response = await sut.route(makeFakeRequest())
 
       expect(response.body).toBe(error.body)
       expect(response.statusCode).toBe(error.statusCode)
@@ -81,7 +85,7 @@ describe('Book Controller', () => {
       const { sut } = makeSut()
       const ok = Ok()
 
-      const response = await sut.post(makeFakeRequest())
+      const response = await sut.route(makeFakeRequest())
 
       expect(response.body).toBe(ok.body)
       expect(response.statusCode).toBe(ok.statusCode)

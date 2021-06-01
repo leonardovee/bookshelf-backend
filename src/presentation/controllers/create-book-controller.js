@@ -1,12 +1,13 @@
 const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper')
 
-class BookController {
+class CreateBookController {
   constructor (addBookUseCase) {
     this.addBookUseCase = addBookUseCase
   }
 
-  async post ({ name, author, description }) {
+  async route (httpRequest) {
     try {
+      const { name, author, description } = httpRequest.body
       if (!name) return Unauthorized('Missing param: name')
       if (!author) return Unauthorized('Missing param: author')
       if (!description) return Unauthorized('Missing param: description')
@@ -18,4 +19,4 @@ class BookController {
   }
 }
 
-module.exports = BookController
+module.exports = CreateBookController
