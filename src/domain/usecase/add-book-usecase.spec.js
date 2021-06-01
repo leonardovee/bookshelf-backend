@@ -76,5 +76,21 @@ describe('AddBook Usecase', () => {
 
       expect(response).toBe('any_row_unique_id')
     })
+
+    test('Should throw if CreateBookRepository throws', async () => {
+      const createBookRepositoryStub = new CreateBookRepositoryStub()
+      const sut = new AddBookUseCase(createBookRepositoryStub)
+      jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      )
+
+      const promise = sut.add({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(promise).rejects.toThrow(new Error())
+    })
   })
 })
