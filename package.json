@@ -7,7 +7,8 @@
   "license": "ISC",
   "scripts": {
     "test": "jest --watch --silent --colors --noStackTrace --passWithNoTests",
-    "test:unit": "npm test -- -c jest-unit-config.js --runInBand"
+    "test:unit": "npm test -- -c jest-unit-config.js --runInBand",
+    "test:ci": "jest --passWithNoTests --silent --noStackTrace --runInBand --coverage"
   },
   "devDependencies": {
     "eslint": "^7.27.0",
