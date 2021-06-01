@@ -21,7 +21,7 @@ const makeSut = () => {
 }
 
 describe('Book Controller', () => {
-  describe('POST', () => {
+  describe('post()', () => {
     test('Should thrown if no name is provided', async () => {
       const { sut } = makeSut()
       const error = Unauthorized('Missing param: name')
