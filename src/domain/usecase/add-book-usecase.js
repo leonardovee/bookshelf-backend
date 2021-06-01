@@ -9,7 +9,8 @@ class AddBookUseCase {
     if (!name) throw new MissingParamError('name')
     if (!author) throw new MissingParamError('author')
     if (!description) throw new MissingParamError('description')
-    await this.createBookRepository.create({ name, author, description })
+    const isCreated = await this.createBookRepository.create({ name, author, description })
+    if (!isCreated) return false
   }
 }
 
