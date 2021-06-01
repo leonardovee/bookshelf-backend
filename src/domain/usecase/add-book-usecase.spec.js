@@ -48,5 +48,19 @@ describe('AddBook Usecase', () => {
         description: 'any_description'
       })
     })
+
+    test('Should return false if CreateBookRepository fails', async () => {
+      const createBookRepositoryStub = new CreateBookRepositoryStub()
+      const sut = new AddBookUseCase(createBookRepositoryStub)
+      jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce(null)
+
+      const response = await sut.add({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(response).toBe(false)
+    })
   })
 })
