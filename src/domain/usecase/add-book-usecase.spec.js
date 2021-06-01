@@ -1,6 +1,10 @@
 const AddBookUseCase = require('./add-book-usecase.js')
 const MissingParamError = require('../../utils/errors/missing-param-error.js')
 
+class CreateBookRepositoryStub {
+  async create ({ name, author, description }) {}
+}
+
 describe('AddBook Usecase', () => {
   describe('add()', () => {
     test('Should throw if no name is provided', () => {
@@ -25,6 +29,24 @@ describe('AddBook Usecase', () => {
       const promise = sut.add({ name: 'any_name', author: 'any_author' })
 
       expect(promise).rejects.toThrow(new MissingParamError('description'))
+    })
+
+    test('Should call CreateBookRepository with correct values', async () => {
+      const createBookRepositoryStub = new CreateBookRepositoryStub()
+      const sut = new AddBookUseCase(createBookRepositoryStub)
+      const createSpy = jest.spyOn(createBookRepositoryStub, 'create')
+
+      await sut.add({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(createSpy).toHaveBeenCalledWith({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
     })
   })
 })
