@@ -49,7 +49,7 @@ describe('AddBook Usecase', () => {
       })
     })
 
-    test('Should return false if CreateBookRepository fails', async () => {
+    test('Should returns false if CreateBookRepository fails', async () => {
       const createBookRepositoryStub = new CreateBookRepositoryStub()
       const sut = new AddBookUseCase(createBookRepositoryStub)
       jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce(null)
@@ -61,6 +61,20 @@ describe('AddBook Usecase', () => {
       })
 
       expect(response).toBe(false)
+    })
+
+    test('Should returns unique id if CreateBookRepository succeeds', async () => {
+      const createBookRepositoryStub = new CreateBookRepositoryStub()
+      const sut = new AddBookUseCase(createBookRepositoryStub)
+      jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce('any_row_unique_id')
+
+      const response = await sut.add({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      expect(response).toBe('any_row_unique_id')
     })
   })
 })
