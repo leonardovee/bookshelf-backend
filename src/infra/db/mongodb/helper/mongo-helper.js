@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb')
 
-const MongodbHelper = {
+const MongoHelper = {
   client: null,
   url: null,
 
@@ -30,4 +30,4 @@ const MongodbHelper = {
   }
 }
 
-module.exports = MongodbHelper
+module.exports = MongoHelper

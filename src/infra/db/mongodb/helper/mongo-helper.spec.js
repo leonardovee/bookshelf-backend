@@ -1,6 +1,6 @@
-const sut = require('./mongodb-helper.js')
+const sut = require('./mongo-helper.js')
 
-describe('Mongodb Helper', () => {
+describe('Mongo Helper', () => {
   beforeAll(async () => {
     await sut.connect(process.env.MONGO_URL ?? '')
   })
@@ -9,7 +9,7 @@ describe('Mongodb Helper', () => {
     await sut.disconnect()
   })
 
-  test('Should reconnect if mongodb is down', async () => {
+  test('Should reconnect if mongo is down', async () => {
     let accountCollection = await sut.getCollection('account')
     expect(accountCollection).toBeTruthy()
 
