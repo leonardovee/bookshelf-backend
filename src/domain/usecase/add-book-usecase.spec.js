@@ -5,10 +5,19 @@ class CreateBookRepositoryStub {
   async create ({ name, author, description }) {}
 }
 
+const makeSut = () => {
+  const createBookRepositoryStub = new CreateBookRepositoryStub()
+  const sut = new AddBookUseCase(createBookRepositoryStub)
+  return {
+    sut,
+    createBookRepositoryStub
+  }
+}
+
 describe('AddBook Usecase', () => {
   describe('add()', () => {
     test('Should throw if no name is provided', () => {
-      const sut = new AddBookUseCase()
+      const { sut } = makeSut()
 
       const promise = sut.add({})
 
@@ -16,7 +25,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should throw if no author is provided', () => {
-      const sut = new AddBookUseCase()
+      const { sut } = makeSut()
 
       const promise = sut.add({ name: 'any_name' })
 
@@ -24,7 +33,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should throw if no description is provided', () => {
-      const sut = new AddBookUseCase()
+      const { sut } = makeSut()
 
       const promise = sut.add({ name: 'any_name', author: 'any_author' })
 
@@ -32,8 +41,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should call CreateBookRepository with correct values', async () => {
-      const createBookRepositoryStub = new CreateBookRepositoryStub()
-      const sut = new AddBookUseCase(createBookRepositoryStub)
+      const { sut, createBookRepositoryStub } = makeSut()
       const createSpy = jest.spyOn(createBookRepositoryStub, 'create')
 
       await sut.add({
@@ -50,8 +58,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should returns false if CreateBookRepository fails', async () => {
-      const createBookRepositoryStub = new CreateBookRepositoryStub()
-      const sut = new AddBookUseCase(createBookRepositoryStub)
+      const { sut, createBookRepositoryStub } = makeSut()
       jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce(null)
 
       const response = await sut.add({
@@ -64,8 +71,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should returns unique id if CreateBookRepository succeeds', async () => {
-      const createBookRepositoryStub = new CreateBookRepositoryStub()
-      const sut = new AddBookUseCase(createBookRepositoryStub)
+      const { sut, createBookRepositoryStub } = makeSut()
       jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce('any_row_unique_id')
 
       const response = await sut.add({
@@ -78,8 +84,7 @@ describe('AddBook Usecase', () => {
     })
 
     test('Should throw if CreateBookRepository throws', async () => {
-      const createBookRepositoryStub = new CreateBookRepositoryStub()
-      const sut = new AddBookUseCase(createBookRepositoryStub)
+      const { sut, createBookRepositoryStub } = makeSut()
       jest.spyOn(createBookRepositoryStub, 'create').mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error()))
       )
