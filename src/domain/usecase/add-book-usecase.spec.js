@@ -10,5 +10,13 @@ describe('AddBook Usecase', () => {
 
       expect(promise).rejects.toThrow(new MissingParamError('name'))
     })
+
+    test('Should throw if no author is provided', () => {
+      const sut = new AddBookUseCase()
+
+      const promise = sut.add({ name: 'any_name' })
+
+      expect(promise).rejects.toThrow(new MissingParamError('author'))
+    })
   })
 })
