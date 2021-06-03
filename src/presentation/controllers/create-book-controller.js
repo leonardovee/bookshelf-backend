@@ -1,4 +1,4 @@
-const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper')
+const { Unauthorized, ServerError, Created } = require('../helpers/http-helper')
 
 class CreateBookController {
   constructor (addBookUseCase) {
@@ -12,7 +12,7 @@ class CreateBookController {
       if (!author) return Unauthorized('Missing param: author')
       if (!description) return Unauthorized('Missing param: description')
       await this.addBookUseCase.add({ name, author, description })
-      return Ok()
+      return Created()
     } catch (error) {
       return ServerError()
     }
