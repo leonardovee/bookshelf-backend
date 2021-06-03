@@ -55,4 +55,19 @@ describe('Get Book Usecase', () => {
 
     expect(promise).rejects.toThrow(new Error())
   })
+
+  test('Should returns book if CreateBookRepository succeeds', async () => {
+    const { sut, getBookRepositoryStub } = makeSut()
+    const book = {
+      _id: 'any_id',
+      name: 'any_name',
+      author: 'any_author',
+      description: 'any_description'
+    }
+    jest.spyOn(getBookRepositoryStub, 'get').mockReturnValueOnce(book)
+
+    const response = await sut.get(makeFakeRequest())
+
+    expect(response).toBe(book)
+  })
 })
