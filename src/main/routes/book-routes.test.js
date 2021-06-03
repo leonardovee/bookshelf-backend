@@ -1,3 +1,4 @@
+const assert = require('assert')
 const request = require('supertest')
 const app = require('../config/app.js')
 const MongoHelper = require('../../infra/db/mongodb/helper/mongo-helper.js')
@@ -55,6 +56,23 @@ describe('Book Routes', () => {
           author: 'any_author'
         })
         .expect(401)
+    })
+  })
+
+  describe('GET /books/:_id', () => {
+    test('Should return 200 on success', async () => {
+      const insertedBook = await bookModel.insertOne({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      await request(app)
+        .get(`/api/books/${insertedBook.ops[0]._id}`)
+        .expect(200)
+        .then(response => {
+          assert(response.body, insertedBook)
+        })
     })
   })
 })
