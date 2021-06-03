@@ -34,5 +34,13 @@ describe('Get Book Repository', () => {
       expect(book.author).toBe('any_author')
       expect(book.description).toBe('any_description')
     })
+
+    test('Should return null on get failure', async () => {
+      const sut = new GetBookRepository()
+
+      const book = await sut.get({ _id: '4cc45467c55f4d2d2a000002' })
+
+      expect(book).toBeNull()
+    })
   })
 })
