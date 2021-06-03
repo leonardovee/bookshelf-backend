@@ -1,4 +1,4 @@
-const { Unauthorized, ServerError } = require('../helpers/http-helper')
+const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper')
 
 class GetBookController {
   constructor (getBookUseCase) {
@@ -9,7 +9,8 @@ class GetBookController {
     try {
       const { _id } = httpRequest.body
       if (!_id) return Unauthorized('Missing param: _id')
-      await this.getBookUseCase.get({ _id })
+      const books = await this.getBookUseCase.get({ _id })
+      return Ok(books)
     } catch (error) {
       return ServerError()
     }
