@@ -9,6 +9,7 @@ class GetBookUseCase {
     if (!_id) throw new MissingParamError('_id')
     const book = await this.getBookRepository.get({ _id })
     if (!book) return {}
+    return book
   }
 }
 
