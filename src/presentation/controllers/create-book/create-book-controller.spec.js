@@ -1,5 +1,5 @@
 const CreateBookController = require('./create-book-controller.js')
-const { Unauthorized, ServerError, Created } = require('../helpers/http-helper.js')
+const { Unauthorized, ServerError, Created } = require('../../helpers/http-helper.js')
 
 class AddBookUseCaseStub {
   async add ({ name, author, description }) {}

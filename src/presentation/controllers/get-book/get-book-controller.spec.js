@@ -1,5 +1,5 @@
 const GetBookController = require('./get-book-controller')
-const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper.js')
+const { Unauthorized, ServerError, Ok } = require('../../helpers/http-helper.js')
 
 class GetBookUseCaseStub {
   async get ({ _id }) {}
