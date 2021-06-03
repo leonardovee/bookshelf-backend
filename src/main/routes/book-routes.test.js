@@ -74,5 +74,11 @@ describe('Book Routes', () => {
           assert(response.body, insertedBook)
         })
     })
+
+    test('Should return 500 when invalid data is provided', async () => {
+      await request(app)
+        .get('/api/books/any_id')
+        .expect(500)
+    })
   })
 })
