@@ -1,5 +1,5 @@
 const CreateBookController = require('./create-book-controller.js')
-const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper.js')
+const { Unauthorized, ServerError, Created } = require('../helpers/http-helper.js')
 
 class AddBookUseCaseStub {
   async add ({ name, author, description }) {}
@@ -82,11 +82,11 @@ describe('Create Book Controller', () => {
 
   test('Should return 201 on success', async () => {
     const { sut } = makeSut()
-    const ok = Ok()
+    const created = Created()
 
     const response = await sut.route(makeFakeRequest())
 
-    expect(response.body).toBe(ok.body)
-    expect(response.statusCode).toBe(ok.statusCode)
+    expect(response.body).toBe(created.body)
+    expect(response.statusCode).toBe(created.statusCode)
   })
 })
