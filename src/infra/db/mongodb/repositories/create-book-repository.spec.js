@@ -3,7 +3,7 @@ const MongoHelper = require('../helper/mongo-helper.js')
 
 let bookCollection = null
 
-describe('CreateBook Repository', () => {
+describe('Create Book Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL ?? '')
   })
@@ -13,7 +13,7 @@ describe('CreateBook Repository', () => {
   })
 
   beforeEach(async () => {
-    bookCollection = await MongoHelper.getCollection('book')
+    bookCollection = await MongoHelper.getCollection('books')
     await bookCollection.deleteMany({})
   })
 
