@@ -9,8 +9,8 @@ class GetBookController {
     try {
       const { _id } = httpRequest.body
       if (!_id) return Unauthorized('Missing param: _id')
-      const books = await this.getBookUseCase.get({ _id })
-      return Ok(books)
+      const book = await this.getBookUseCase.get({ _id })
+      return Ok(book)
     } catch (error) {
       return ServerError()
     }
