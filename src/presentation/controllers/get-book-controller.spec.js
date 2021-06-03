@@ -1,5 +1,5 @@
 const GetBookController = require('./get-book-controller')
-const { Unauthorized, ServerError } = require('../helpers/http-helper.js')
+const { Unauthorized, ServerError, Ok } = require('../helpers/http-helper.js')
 
 class GetBookUseCaseStub {
   async get ({ _id }) {}
@@ -51,5 +51,22 @@ describe('Get Book Controller', () => {
 
     expect(response.body).toBe(error.body)
     expect(response.statusCode).toBe(error.statusCode)
+  })
+
+  test('Should return the book on success', async () => {
+    const { sut, getBookUseCaseStub } = makeSut()
+    const book = {
+      _id: 'any_id',
+      name: 'any_name',
+      author: 'any_author',
+      description: 'any_description'
+    }
+    jest.spyOn(getBookUseCaseStub, 'get').mockReturnValueOnce(book)
+    const ok = Ok(book)
+
+    const response = await sut.route(makeFakeRequest())
+
+    expect(response.body).toBe(ok.body)
+    expect(response.statusCode).toBe(ok.statusCode)
   })
 })
