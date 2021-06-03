@@ -18,41 +18,43 @@ describe('Book Routes', () => {
     await MongoHelper.disconnect()
   })
 
-  test('Should return 201 on success', async () => {
-    await request(app)
-      .post('/api/books')
-      .send({
+  describe('POST /books', () => {
+    test('Should return 201 on success', async () => {
+      await request(app)
+        .post('/api/books')
+        .send({
+          name: 'any_name',
+          author: 'any_author',
+          description: 'any_description'
+        })
+        .expect(201)
+    })
+
+    test('Should create a book on success', async () => {
+      const insertedBook = {
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      }
+      await request(app)
+        .post('/api/books')
+        .send(insertedBook)
+      const { _id, ...retrievedBook } = await bookModel.findOne({
         name: 'any_name',
         author: 'any_author',
         description: 'any_description'
       })
-      .expect(201)
-  })
-
-  test('Should create a book on success', async () => {
-    const insertedBook = {
-      name: 'any_name',
-      author: 'any_author',
-      description: 'any_description'
-    }
-    await request(app)
-      .post('/api/books')
-      .send(insertedBook)
-    const { _id, ...retrievedBook } = await bookModel.findOne({
-      name: 'any_name',
-      author: 'any_author',
-      description: 'any_description'
+      expect(retrievedBook).toEqual(insertedBook)
     })
-    expect(retrievedBook).toEqual(insertedBook)
-  })
 
-  test('Should return 401 when invalid data is provided', async () => {
-    await request(app)
-      .post('/api/books')
-      .send({
-        name: 'any_name',
-        author: 'any_author'
-      })
-      .expect(401)
+    test('Should return 401 when invalid data is provided', async () => {
+      await request(app)
+        .post('/api/books')
+        .send({
+          name: 'any_name',
+          author: 'any_author'
+        })
+        .expect(401)
+    })
   })
 })
