@@ -7,7 +7,7 @@ class GetBookController {
 
   async route (httpRequest) {
     try {
-      const { _id } = httpRequest.body
+      const { _id } = httpRequest.params
       if (!_id) return Unauthorized('Missing param: _id')
       const book = await this.getBookUseCase.get({ _id })
       return Ok(book)

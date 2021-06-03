@@ -6,7 +6,7 @@ class GetBookUseCaseStub {
 }
 
 const makeFakeRequest = () => ({
-  body: {
+  params: {
     _id: 'any_id'
   }
 })
@@ -25,7 +25,7 @@ describe('Get Book Controller', () => {
     const { sut } = makeSut()
     const error = Unauthorized('Missing param: _id')
 
-    const response = await sut.route({ body: {} })
+    const response = await sut.route({ params: {} })
 
     expect(response.body).toBe(error.body)
     expect(response.statusCode).toBe(error.statusCode)
@@ -37,7 +37,7 @@ describe('Get Book Controller', () => {
 
     await sut.route(makeFakeRequest())
 
-    expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().params)
   })
 
   test('Should return 500 if GetBookUseCase throws', async () => {
