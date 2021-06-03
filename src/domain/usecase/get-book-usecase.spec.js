@@ -44,4 +44,15 @@ describe('Get Book Usecase', () => {
 
     expect(response).toStrictEqual({})
   })
+
+  test('Should throw if GetBookRepository throws', async () => {
+    const { sut, getBookRepositoryStub } = makeSut()
+    jest.spyOn(getBookRepositoryStub, 'get').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error()))
+    )
+
+    const promise = sut.get(makeFakeRequest())
+
+    expect(promise).rejects.toThrow(new Error())
+  })
 })
