@@ -6,5 +6,5 @@ module.exports = router => {
   const createBookController = createBookControllerComposer.compose()
   router.post('/books', adapt(createBookController))
   const getBookControllerComposer = GetBookControllerComposer.compose()
-  router.get('/books/:id', adapt(getBookControllerComposer))
+  router.get('/books/:_id', adapt(getBookControllerComposer))
 }
