@@ -1,5 +1,5 @@
 const GetBookController = require('./get-book-controller')
-const { Unauthorized } = require('../helpers/http-helper.js')
+const { Unauthorized, ServerError } = require('../helpers/http-helper.js')
 
 class GetBookUseCaseStub {
   async get ({ _id }) {}
@@ -38,5 +38,18 @@ describe('Get Book Controller', () => {
     await sut.route(makeFakeRequest())
 
     expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+
+  test('Should return 500 if GetBookUseCase throws', async () => {
+    const { sut, getBookUseCaseStub } = makeSut()
+    jest.spyOn(getBookUseCaseStub, 'get').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error()))
+    )
+    const error = ServerError()
+
+    const response = await sut.route(makeFakeRequest())
+
+    expect(response.body).toBe(error.body)
+    expect(response.statusCode).toBe(error.statusCode)
   })
 })
