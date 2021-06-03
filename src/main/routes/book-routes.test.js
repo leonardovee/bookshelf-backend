@@ -80,5 +80,11 @@ describe('Book Routes', () => {
         .get('/api/books/any_id')
         .expect(500)
     })
+
+    test('Should return empty body when not found', async () => {
+      await request(app)
+        .get('/api/books/4cc45467c55f4d2d2a000002')
+        .expect(200)
+    })
   })
 })
