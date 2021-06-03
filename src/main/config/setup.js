@@ -1,6 +1,6 @@
-const cors = require('../middlewares/cors')
-const jsonParser = require('../middlewares/json-parser')
-const contentType = require('../middlewares/content-type')
+const cors = require('../middlewares/cors.js')
+const jsonParser = require('../middlewares/json-parser.js')
+const contentType = require('../middlewares/content-type.js')
 
 module.exports = app => {
   app.disable('x-powered-by')

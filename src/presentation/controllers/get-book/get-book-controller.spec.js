@@ -1,4 +1,4 @@
-const GetBookController = require('./get-book-controller')
+const GetBookController = require('./get-book-controller.js')
 const { Unauthorized, ServerError, Ok } = require('../../helpers/http-helper.js')
 
 class GetBookUseCaseStub {

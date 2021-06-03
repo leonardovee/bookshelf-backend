@@ -5,7 +5,7 @@ let app
 describe('Content Type Middleware', () => {
   beforeEach(() => {
     jest.resetModules()
-    app = require('../config/app')
+    app = require('../config/app.js')
   })
 
   test('Should return JSON content-type as default', async () => {

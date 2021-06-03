@@ -1,4 +1,4 @@
-const { Unauthorized, ServerError, Created } = require('../../helpers/http-helper')
+const { Unauthorized, ServerError, Created } = require('../../helpers/http-helper.js')
 
 class CreateBookController {
   constructor (addBookUseCase) {
