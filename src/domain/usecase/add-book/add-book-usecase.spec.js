@@ -1,5 +1,5 @@
 const AddBookUseCase = require('./add-book-usecase.js')
-const MissingParamError = require('../../utils/errors/missing-param-error.js')
+const MissingParamError = require('../../../utils/errors/missing-param-error.js')
 
 class CreateBookRepositoryStub {
   async create ({ name, author, description }) {}

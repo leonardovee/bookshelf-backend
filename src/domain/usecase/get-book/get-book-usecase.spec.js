@@ -1,4 +1,4 @@
-const MissingParamError = require('../../utils/errors/missing-param-error')
+const MissingParamError = require('../../../utils/errors/missing-param-error')
 const GetBookUseCase = require('./get-book-usecase')
 
 class GetBookRepositoryStub {
