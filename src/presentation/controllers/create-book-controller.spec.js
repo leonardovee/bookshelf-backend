@@ -22,73 +22,71 @@ const makeSut = () => {
   }
 }
 
-describe('Book Controller', () => {
-  describe('post()', () => {
-    test('Should thrown if no name is provided', async () => {
-      const { sut } = makeSut()
-      const error = Unauthorized('Missing param: name')
+describe('Create Book Controller', () => {
+  test('Should thrown if no name is provided', async () => {
+    const { sut } = makeSut()
+    const error = Unauthorized('Missing param: name')
 
-      const response = await sut.route({ body: {} })
+    const response = await sut.route({ body: {} })
 
-      expect(response.body).toBe(error.body)
-      expect(response.statusCode).toBe(error.statusCode)
+    expect(response.body).toBe(error.body)
+    expect(response.statusCode).toBe(error.statusCode)
+  })
+
+  test('Should thrown if no author is provided', async () => {
+    const { sut } = makeSut()
+    const error = Unauthorized('Missing param: author')
+
+    const response = await sut.route({ body: { name: 'any_name' } })
+
+    expect(response.body).toBe(error.body)
+    expect(response.statusCode).toBe(error.statusCode)
+  })
+
+  test('Should thrown if no description is provided', async () => {
+    const { sut } = makeSut()
+    const error = Unauthorized('Missing param: description')
+
+    const response = await sut.route({
+      body: {
+        name: 'any_name',
+        author: 'any_author'
+      }
     })
 
-    test('Should thrown if no author is provided', async () => {
-      const { sut } = makeSut()
-      const error = Unauthorized('Missing param: author')
+    expect(response.body).toBe(error.body)
+    expect(response.statusCode).toBe(error.statusCode)
+  })
 
-      const response = await sut.route({ body: { name: 'any_name' } })
+  test('Should call AddBookUseCase with correct values', async () => {
+    const { sut, addBookUseCaseStub } = makeSut()
+    const addSpy = jest.spyOn(addBookUseCaseStub, 'add')
 
-      expect(response.body).toBe(error.body)
-      expect(response.statusCode).toBe(error.statusCode)
-    })
+    await sut.route(makeFakeRequest())
 
-    test('Should thrown if no description is provided', async () => {
-      const { sut } = makeSut()
-      const error = Unauthorized('Missing param: description')
+    expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
 
-      const response = await sut.route({
-        body: {
-          name: 'any_name',
-          author: 'any_author'
-        }
-      })
+  test('Should return 500 if AddBookUseCase throws', async () => {
+    const { sut, addBookUseCaseStub } = makeSut()
+    jest.spyOn(addBookUseCaseStub, 'add').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error()))
+    )
+    const error = ServerError()
 
-      expect(response.body).toBe(error.body)
-      expect(response.statusCode).toBe(error.statusCode)
-    })
+    const response = await sut.route(makeFakeRequest())
 
-    test('Should call AddBookUseCase with correct values', async () => {
-      const { sut, addBookUseCaseStub } = makeSut()
-      const addSpy = jest.spyOn(addBookUseCaseStub, 'add')
+    expect(response.body).toBe(error.body)
+    expect(response.statusCode).toBe(error.statusCode)
+  })
 
-      await sut.route(makeFakeRequest())
+  test('Should return 201 on success', async () => {
+    const { sut } = makeSut()
+    const ok = Ok()
 
-      expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
-    })
+    const response = await sut.route(makeFakeRequest())
 
-    test('Should return 500 if AddBookUseCase throws', async () => {
-      const { sut, addBookUseCaseStub } = makeSut()
-      jest.spyOn(addBookUseCaseStub, 'add').mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      )
-      const error = ServerError()
-
-      const response = await sut.route(makeFakeRequest())
-
-      expect(response.body).toBe(error.body)
-      expect(response.statusCode).toBe(error.statusCode)
-    })
-
-    test('Should return 201 on success', async () => {
-      const { sut } = makeSut()
-      const ok = Ok()
-
-      const response = await sut.route(makeFakeRequest())
-
-      expect(response.body).toBe(ok.body)
-      expect(response.statusCode).toBe(ok.statusCode)
-    })
+    expect(response.body).toBe(ok.body)
+    expect(response.statusCode).toBe(ok.statusCode)
   })
 })
