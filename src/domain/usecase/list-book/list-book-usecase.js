@@ -3,8 +3,8 @@ class ListBookUseCase {
     this.listBookRepository = listBookRepository
   }
 
-  async list ({ offset }) {
-    const list = await this.listBookRepository.list({ offset })
+  async list ({ offset, name }) {
+    const list = await this.listBookRepository.list({ offset, name })
     if (!list) return []
     return list
   }
