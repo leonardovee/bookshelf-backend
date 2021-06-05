@@ -35,4 +35,15 @@ describe('List Book Usecase', () => {
 
     expect(response).toStrictEqual([])
   })
+
+  test('Should throw if ListBookRepository throws', async () => {
+    const { sut, listBookRepositoryStub } = makeSut()
+    jest.spyOn(listBookRepositoryStub, 'list').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error()))
+    )
+
+    const promise = sut.list(makeFakeRequest())
+
+    expect(promise).rejects.toThrow(new Error())
+  })
 })
