@@ -5,7 +5,8 @@ class ListBookRepositoryStub {
 }
 
 const makeFakeRequest = () => ({
-  offset: 'any_offset'
+  offset: 'any_offset',
+  name: 'any_name'
 })
 
 const makeSut = () => {
