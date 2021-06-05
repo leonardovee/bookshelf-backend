@@ -7,9 +7,9 @@ class ListBookController {
 
   async route (httpRequest) {
     try {
-      const { offset } = httpRequest.query
+      const { offset, name } = httpRequest.query
       if (offset && !parseInt(offset)) return Unauthorized('Incorrect param value: offset')
-      const list = await this.listBookUseCase.list({ offset })
+      const list = await this.listBookUseCase.list({ offset, name })
       return Ok(list)
     } catch (error) {
       return ServerError()
