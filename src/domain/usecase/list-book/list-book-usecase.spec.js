@@ -26,4 +26,13 @@ describe('List Book Usecase', () => {
 
     expect(createSpy).toHaveBeenCalledWith(makeFakeRequest())
   })
+
+  test('Should returns empty if ListBookRepository fails', async () => {
+    const { sut, listBookRepositoryStub } = makeSut()
+    jest.spyOn(listBookRepositoryStub, 'list').mockReturnValueOnce(null)
+
+    const response = await sut.list(makeFakeRequest())
+
+    expect(response).toStrictEqual([])
+  })
 })
