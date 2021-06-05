@@ -1,4 +1,4 @@
-const { Ok, ServerError } = require('../../helpers/http-helper.js')
+const { Ok, ServerError, Unauthorized } = require('../../helpers/http-helper.js')
 
 class ListBookController {
   constructor (listBookUseCase) {
@@ -7,8 +7,9 @@ class ListBookController {
 
   async route (httpRequest) {
     try {
-      const { query } = httpRequest
-      const list = await this.listBookUseCase.list(query)
+      const { offset } = httpRequest.query
+      if (!parseInt(offset)) return Unauthorized('Incorrect param value: offset')
+      const list = await this.listBookUseCase.list({ offset })
       return Ok(list)
     } catch (error) {
       return ServerError()
