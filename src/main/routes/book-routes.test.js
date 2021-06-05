@@ -104,7 +104,52 @@ describe('Book Routes', () => {
         })
     })
 
-    test('Should return 401 when invalid query is provided', async () => {
+    test('Should return 200 on query by name success', async () => {
+      const insertedBook = await bookModel.insertOne({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      await request(app)
+        .get('/api/books?name=any_')
+        .expect(200)
+        .then(response => {
+          assert(response.body, insertedBook)
+        })
+    })
+
+    test('Should return 200 on query by offset success', async () => {
+      const insertedBook = [
+        {
+          name: 'any_name',
+          author: 'any_author',
+          description: 'any_description'
+        },
+        {
+          name: 'any_name',
+          author: 'any_author',
+          description: 'any_description'
+        },
+        {
+          name: 'any_name',
+          author: 'any_author',
+          description: 'any_description'
+        }
+      ]
+      await bookModel.insertMany(insertedBook)
+
+      insertedBook.shift()
+
+      await request(app)
+        .get('/api/books?offset=1')
+        .expect(200)
+        .then(response => {
+          assert(response.body, insertedBook)
+        })
+    })
+
+    test('Should return 401 when invalid offset is provided', async () => {
       await request(app)
         .get('/api/books?offset=oi')
         .expect(401)
