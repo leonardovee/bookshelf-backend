@@ -46,4 +46,27 @@ describe('List Book Usecase', () => {
 
     expect(promise).rejects.toThrow(new Error())
   })
+
+  test('Should returns list if ListBookRepository succeeds', async () => {
+    const { sut, listBookRepositoryStub } = makeSut()
+    const list = [
+      {
+        _id: 'any_id',
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      },
+      {
+        _id: 'any_id',
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      }
+    ]
+    jest.spyOn(listBookRepositoryStub, 'list').mockReturnValueOnce(list)
+
+    const response = await sut.list(makeFakeRequest())
+
+    expect(response).toBe(list)
+  })
 })
