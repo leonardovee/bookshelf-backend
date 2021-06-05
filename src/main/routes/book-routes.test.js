@@ -87,4 +87,33 @@ describe('Book Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /books/', () => {
+    test('Should return 200 on success', async () => {
+      const insertedBook = await bookModel.insertOne({
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      })
+
+      await request(app)
+        .get('/api/books')
+        .expect(200)
+        .then(response => {
+          assert(response.body, insertedBook)
+        })
+    })
+
+    test('Should return 401 when invalid query is provided', async () => {
+      await request(app)
+        .get('/api/books?offset=oi')
+        .expect(401)
+    })
+
+    test('Should return empty body when not found', async () => {
+      await request(app)
+        .get('/api/books')
+        .expect(200)
+    })
+  })
 })
