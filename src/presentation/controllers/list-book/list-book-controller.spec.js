@@ -7,7 +7,8 @@ class ListBookUseCaseStub {
 
 const makeFakeRequest = () => ({
   query: {
-    offset: 10
+    offset: 10,
+    name: 'any_name'
   }
 })
 
@@ -30,7 +31,7 @@ describe('List Book Controller', () => {
     expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().query)
   })
 
-  test('Should return 401 if query is incorrect', async () => {
+  test('Should return 401 if offset is not a integer', async () => {
     const { sut } = makeSut()
     const error = Unauthorized()
 
