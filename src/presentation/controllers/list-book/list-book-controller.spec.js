@@ -1,5 +1,5 @@
 const ListBookController = require('./list-book-controller.js')
-const { Ok, ServerError } = require('../../helpers/http-helper.js')
+const { Ok, ServerError, Unauthorized } = require('../../helpers/http-helper.js')
 
 class ListBookUseCaseStub {
   async list ({ _id }) {}
@@ -7,7 +7,7 @@ class ListBookUseCaseStub {
 
 const makeFakeRequest = () => ({
   query: {
-    offset: 'any_offset'
+    offset: 10
   }
 })
 
@@ -28,6 +28,20 @@ describe('List Book Controller', () => {
     await sut.route(makeFakeRequest())
 
     expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().query)
+  })
+
+  test('Should return 401 if query is incorrect', async () => {
+    const { sut } = makeSut()
+    const error = Unauthorized()
+
+    const response = await sut.route({
+      query: {
+        offset: 'any_offset'
+      }
+    })
+
+    expect(response.body).toBe('Incorrect param value: offset')
+    expect(response.statusCode).toBe(error.statusCode)
   })
 
   test('Should return 500 if ListBookUseCase throws', async () => {
