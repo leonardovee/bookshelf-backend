@@ -1,5 +1,5 @@
 const ListBookController = require('./list-book-controller.js')
-const { ServerError } = require('../../helpers/http-helper.js')
+const { Ok, ServerError } = require('../../helpers/http-helper.js')
 
 class ListBookUseCaseStub {
   async list ({ _id }) {}
@@ -41,5 +41,30 @@ describe('List Book Controller', () => {
 
     expect(response.body).toBe(error.body)
     expect(response.statusCode).toBe(error.statusCode)
+  })
+
+  test('Should return the list on success', async () => {
+    const { sut, listBookUseCaseStub } = makeSut()
+    const list = [
+      {
+        _id: 'any_id',
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      },
+      {
+        _id: 'any_id',
+        name: 'any_name',
+        author: 'any_author',
+        description: 'any_description'
+      }
+    ]
+    jest.spyOn(listBookUseCaseStub, 'list').mockReturnValueOnce(list)
+    const ok = Ok(list)
+
+    const response = await sut.route(makeFakeRequest())
+
+    expect(response.body).toBe(ok.body)
+    expect(response.statusCode).toBe(ok.statusCode)
   })
 })
