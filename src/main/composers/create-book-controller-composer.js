@@ -1,4 +1,4 @@
-const CreateBookRepository = require('../../infra/db/mongodb/repositories/create-book-repository.js')
+const CreateBookRepository = require('../../infra/db/mongodb/repositories/create-book/create-book-repository.js')
 const AddBookUseCase = require('../../domain/usecase/add-book/add-book-usecase.js')
 const CreateBookController = require('../../presentation/controllers/create-book/create-book-controller.js')
 

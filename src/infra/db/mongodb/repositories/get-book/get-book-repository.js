@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb')
-const MongoHelper = require('../helper/mongo-helper.js')
+const MongoHelper = require('../../helper/mongo-helper.js')
 
 class GetBookRepository {
   async get ({ _id }) {

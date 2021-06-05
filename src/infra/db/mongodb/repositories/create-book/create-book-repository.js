@@ -1,4 +1,4 @@
-const MongoHelper = require('../helper/mongo-helper.js')
+const MongoHelper = require('../../helper/mongo-helper.js')
 
 class CreateBookRepository {
   async create ({ name, author, description }) {

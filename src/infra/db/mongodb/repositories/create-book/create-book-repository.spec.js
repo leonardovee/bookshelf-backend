@@ -1,5 +1,5 @@
 const CreateBookRepository = require('./create-book-repository.js')
-const MongoHelper = require('../helper/mongo-helper.js')
+const MongoHelper = require('../../helper/mongo-helper.js')
 
 let bookCollection = null
 

@@ -1,4 +1,4 @@
-const GetBookRepository = require('../../infra/db/mongodb/repositories/get-book-repository.js')
+const GetBookRepository = require('../../infra/db/mongodb/repositories/get-book/get-book-repository.js')
 const GetBookUseCase = require('../../domain/usecase/get-book/get-book-usecase.js')
 const GetBookController = require('../../presentation/controllers/get-book/get-book-controller.js')
 
