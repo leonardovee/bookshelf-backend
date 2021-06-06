@@ -39,9 +39,9 @@ There is also methods to search a book and pagination, `get`:
 
 ### To test the api first you gotta clone and set the enviroment vars:
 ```console
-$ git clone https://github.com/leonardovee/find-my-dev.git
+$ git clone https://github.com/leonardovee/bookshelf-backend.git
 
-$ cd find-my-dev
+$ cd bookshelf-backend
 
 $ cp .env .env.example
 ```
