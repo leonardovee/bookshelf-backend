@@ -8,7 +8,11 @@ class ListBookRepository {
 
   async search ({ offset, name }) {
     const bookCollection = await MongoHelper.getCollection('books')
-    return await bookCollection.find({ name: { $regex: name, $options: 'i' } }).toArray()
+    return await bookCollection
+      .find({ name: { $regex: name, $options: 'i' } })
+      .skip(parseInt(offset))
+      .limit(10)
+      .toArray()
   }
 
   async find ({ offset, name }) {
