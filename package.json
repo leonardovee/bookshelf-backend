@@ -7,9 +7,10 @@
   "license": "ISC",
   "scripts": {
     "start": "node src/main/index.js",
-    "test": "jest --watch --silent --colors --noStackTrace --passWithNoTests",
-    "test:unit": "npm test -- -c jest-unit-config.js --runInBand",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js --runInBand",
+    "test": "jest --coverage",
+    "test:dev": "jest --watch --silent --colors --noStackTrace --passWithNoTests",
+    "test:unit": "npm test:dev -- -c jest-unit-config.js --runInBand",
+    "test:integration": "npm test:dev -- --watch -c jest-integration-config.js --runInBand",
     "test:ci": "jest --passWithNoTests --silent --noStackTrace --runInBand --coverage"
   },
   "devDependencies": {
