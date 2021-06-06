@@ -2,14 +2,22 @@ const MongoHelper = require('../../helper/mongo-helper.js')
 
 class ListBookRepository {
   async list ({ offset, name }) {
+    if (name) return this.search({ offset, name })
+    return this.find({ offset, name })
+  }
+
+  async search ({ offset, name }) {
     const bookCollection = await MongoHelper.getCollection('books')
-    if (name) return await bookCollection.find({ name: { $regex: name, $options: 'i' } }).toArray()
-    const result = await bookCollection
+    return await bookCollection.find({ name: { $regex: name, $options: 'i' } }).toArray()
+  }
+
+  async find ({ offset, name }) {
+    const bookCollection = await MongoHelper.getCollection('books')
+    return await bookCollection
       .find({})
       .skip(parseInt(offset))
-      .limit(100)
+      .limit(10)
       .toArray()
-    return result
   }
 }
 
