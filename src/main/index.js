@@ -1,4 +1,8 @@
 const MongoHelper = require('../infra/db/mongodb/helper/mongo-helper.js')
+const dotenv = require('dotenv-safe')
+
+dotenv.config()
+
 const env = require('./config/env.js')
 
 MongoHelper.connect(env.mongoUrl)
